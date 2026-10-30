@@ -1,0 +1,421 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Foodora Đà Nẵng — 50 Quán Chuẩn Ảnh & Siêu Vòng Quay</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+  <link rel="stylesheet" href="assets/css/styles.css">
+</head>
+<body>
+
+  <div class="app-shell">
+    <!-- 1. TOP HEADER BAR -->
+    <header class="topbar">
+      <div class="topbar-left">
+        <a class="brand-logo" onclick="switchView('home')">
+          <div class="brand-icon" id="brandIcon">🍽️</div>
+          <span class="brand-name" id="brandName">Foodora</span>
+        </a>
+
+        <div class="location-selector">
+          <span style="color:var(--primary);">📍</span>
+          <select id="headerDistrict" onchange="syncDistrict('header')" title="Chọn Quận tại Đà Nẵng">
+            <option value="all">Đà Nẵng (Tất cả 6 Quận)</option>
+            <option value="Hải Châu">Q. Hải Châu (10 quán)</option>
+            <option value="Sơn Trà">Q. Sơn Trà (9 quán)</option>
+            <option value="Ngũ Hành Sơn">Q. Ngũ Hành Sơn (9 quán)</option>
+            <option value="Thanh Khê">Q. Thanh Khê (8 quán)</option>
+            <option value="Liên Chiểu">Q. Liên Chiểu (8 quán)</option>
+            <option value="Cẩm Lệ">Q. Cẩm Lệ (6 quán)</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="search-box">
+        <span class="search-icon">🔍</span>
+        <input id="globalSearch" type="text" placeholder="Tìm món ăn, kem bơ, trà sữa, bánh mì hoặc tên đường..." oninput="handleGlobalSearch()" />
+      </div>
+
+      <div class="topbar-right">
+        <div class="theme-switch-pills">
+          <button class="theme-pill-btn active" data-t="default" onclick="setAppTheme('default')">🍊 Foodora</button>
+          <button class="theme-pill-btn" data-t="hoi-meo" onclick="setAppTheme('hoi-meo')">🐱 Hội Mèo</button>
+          <button class="theme-pill-btn" data-t="tho-lun" onclick="setAppTheme('tho-lun')">🐰 Thỏ Lùn</button>
+        </div>
+
+        <button class="icon-badge-btn" onclick="openRandomStudio('roulette')" title="Mở Phòng Quay Gacha">
+          <span>🎰</span>
+          <span class="badge-count" id="spinCountBadge">0</span>
+        </button>
+
+        <div class="user-profile">
+          <img class="user-avatar" src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=120&q=80" alt="User" />
+          <span class="user-name">Xuân Mai</span>
+        </div>
+      </div>
+    </header>
+
+    <!-- 2. BỐ CỤC SIDEBAR TRÁI + CONTENT PHẢI -->
+    <div class="layout-body">
+
+      <!-- SIDEBAR TRÁI -->
+      <aside class="sidebar">
+        <nav class="side-nav">
+          <button class="side-link active" data-view="home" onclick="switchView('home')">
+            <span class="s-icon">🏠</span><span>Trang chủ</span>
+          </button>
+          <button class="side-link" onclick="openRandomStudio('roulette')">
+            <span class="s-icon">🎰</span><span>Vòng Quay Xịn Xò</span>
+          </button>
+          <button class="side-link" onclick="openRandomStudio('blindbox')">
+            <span class="s-icon">🐾</span><span>Hộp Mù Hội Mèo</span>
+          </button>
+          <button class="side-link" onclick="openRandomStudio('combo')">
+            <span class="s-icon">⚡</span><span>Combo 3 Tăng</span>
+          </button>
+          <button class="side-link" data-view="all" onclick="switchView('all')">
+            <span class="s-icon">🏪</span><span>50 Quán theo Quận</span>
+          </button>
+          <button class="side-link" data-view="cuisines" onclick="switchView('cuisines')">
+            <span class="s-icon">🌍</span><span>6 Nền Ẩm thực</span>
+          </button>
+          <button class="side-link" data-view="kanban" onclick="switchView('kanban')">
+            <span class="s-icon">📋</span><span>Kanban Dự án</span>
+          </button>
+        </nav>
+
+        <!-- Promo Card góc dưới Sidebar -->
+        <div class="sidebar-promo">
+          <h4>Chưa biết trưa nay đi ăn quán nào?</h4>
+          <p>Chế độ Gacha: <code id="promoCodeLabel">ROULETTE</code></p>
+          <img src="https://images.unsplash.com/photo-1555126634-323283e090fa?auto=format&fit=crop&w=200&q=80" alt="Mì Quảng" />
+          <button class="btn-primary-pill" style="width:100%;" onclick="openRandomStudio('roulette')">
+            Mở Vòng Quay &rarr;
+          </button>
+        </div>
+      </aside>
+
+      <!-- CONTENT CHÍNH BÊN PHẢI -->
+      <main class="content-area">
+
+        <!-- VIEW 1: TRANG CHỦ -->
+        <section id="view-home" class="view-section active">
+
+          <!-- HERO BANNER -->
+          <div class="hero-banner">
+            <div class="hero-text">
+              <h1 id="heroHeadline">
+                Hôm nay ăn gì,
+                <span>quay món siêu tốc</span>
+              </h1>
+              <p>
+                50 quán ăn ngon, ăn vặt & đồ uống tại 6 quận Đà Nẵng với hình ảnh thực tế khớp 100% từng món. Bấm mở Băng Chuyền Vô Cực hoặc Hộp Mù Hội Mèo ngay!
+              </p>
+              <div class="hero-actions">
+                <button class="btn-primary-pill" onclick="openRandomStudio('roulette')">
+                  🎰 Quay Băng Chuyền &rarr;
+                </button>
+                <button class="btn-soft-pill" onclick="openRandomStudio('blindbox')">
+                  🐾 Đập Hộp Hội Mèo
+                </button>
+                <select id="mealSelect" class="filter-select" onchange="renderHome()">
+                  <option value="all">🕒 Mọi khung giờ</option>
+                  <option value="breakfast">🌅 Bữa sáng</option>
+                  <option value="lunch">☀️ Bữa trưa</option>
+                  <option value="dinner">🌆 Bữa tối</option>
+                  <option value="latenight">🌙 Ăn khuya & Chill</option>
+                </select>
+                <select id="budgetSelect" class="filter-select" onchange="renderHome()">
+                  <option value="999999">💰 Mọi mức giá</option>
+                  <option value="35000">🪙 Dưới 35.000đ</option>
+                  <option value="65000">💵 Dưới 65.000đ</option>
+                </select>
+              </div>
+            </div>
+
+            <!-- Đĩa thức ăn tròn ở giữa -->
+            <div class="hero-plate-wrap" onclick="openRandomStudio('roulette')" title="Bấm để mở vòng quay">
+              <div class="hero-plate-ring">
+                <img id="heroPlateImg" class="hero-plate-img" src="https://images.unsplash.com/photo-1555126634-323283e090fa?auto=format&fit=crop&w=600&q=80" alt="Mì Quảng Đà Nẵng" />
+              </div>
+            </div>
+
+            <!-- Thẻ nổi bên phải hiển thị món vừa trúng -->
+            <div class="hero-deal-card">
+              <div class="deal-tag" id="bannerDealTag">🔥 Đề xuất nổi bật</div>
+              <div class="deal-title" id="bannerDealTitle">Mì Quảng Tôm Thịt 1A</div>
+              <div class="deal-sub" id="bannerDealSub">📍 Q. Hải Châu • 💰 40.000đ</div>
+              <a id="bannerDealLink" href="https://www.google.com/maps/search/?api=1&query=Mi+Quang+1A+Hai+Phong+Da+Nang" target="_blank" rel="noopener noreferrer" class="deal-link">
+                Xem trên Google Maps &rarr;
+              </a>
+            </div>
+          </div>
+
+          <!-- CATEGORIES (6 HỆ KHẨU VỊ: ĐÃ ĐỔI THÀNH ĂN VẶT & ĐỒ UỐNG) -->
+          <div class="section-head">
+            <h2>Danh mục khẩu vị (Categories)</h2>
+            <button class="view-all-btn" onclick="selectPersona('all')">Xem tất cả 50 quán</button>
+          </div>
+
+          <div class="categories-grid" id="categoriesGrid">
+            <div class="cat-card active" data-p="all" onclick="selectPersona('all')">
+              <div class="cat-thumb-wrap">
+                <img src="https://images.unsplash.com/photo-1555126634-323283e090fa?auto=format&fit=crop&w=200&q=80" alt="Tất cả" />
+              </div>
+              <div class="cat-name">Tất cả món</div>
+              <div class="cat-count">50 Quán Đà Nẵng</div>
+            </div>
+
+            <div class="cat-card" data-p="snack" onclick="selectPersona('snack')">
+              <div class="cat-thumb-wrap">
+                <img src="https://images.unsplash.com/photo-1635363638580-c2809d049eee?auto=format&fit=crop&w=200&q=80" alt="Ăn vặt" />
+              </div>
+              <div class="cat-name">Hệ Ăn Vặt</div>
+              <div class="cat-count">18 Quán ăn vặt</div>
+            </div>
+
+            <div class="cat-card" data-p="drink" onclick="selectPersona('drink')">
+              <div class="cat-thumb-wrap">
+                <img src="https://images.unsplash.com/photo-1558857563-b371033873b8?auto=format&fit=crop&w=200&q=80" alt="Đồ uống" />
+              </div>
+              <div class="cat-name">Hệ Đồ Uống</div>
+              <div class="cat-count">10 Quán nước</div>
+            </div>
+
+            <div class="cat-card" data-p="main" onclick="selectPersona('main')">
+              <div class="cat-thumb-wrap">
+                <img src="https://images.unsplash.com/photo-1598515214211-89d3c73ae83b?auto=format&fit=crop&w=200&q=80" alt="Món chính" />
+              </div>
+              <div class="cat-name">Món Chính</div>
+              <div class="cat-count">22 Quán ăn no</div>
+            </div>
+
+            <div class="cat-card" data-p="vegetarian" onclick="selectPersona('vegetarian')">
+              <div class="cat-thumb-wrap">
+                <img src="https://images.unsplash.com/photo-1512621776951-a57141f2eefd?auto=format&fit=crop&w=200&q=80" alt="Ăn chay" />
+              </div>
+              <div class="cat-name">Hệ Ăn Chay</div>
+              <div class="cat-count">24 Món thanh đạm</div>
+            </div>
+
+            <div class="cat-card" data-p="budget" onclick="selectPersona('budget')">
+              <div class="cat-thumb-wrap">
+                <img src="https://images.unsplash.com/photo-1509722747041-616f39b57569?auto=format&fit=crop&w=200&q=80" alt="Sinh viên" />
+              </div>
+              <div class="cat-name">Sinh Viên &le;35k</div>
+              <div class="cat-count">26 Quán giá rẻ</div>
+            </div>
+          </div>
+
+          <!-- POPULAR RESTAURANTS -->
+          <div class="section-head">
+            <h2 id="homeListTitle">Quán ngon đề xuất tại Đà Nẵng</h2>
+            <button class="view-all-btn" onclick="switchView('all')">Xem chia theo 6 Quận &rarr;</button>
+          </div>
+
+          <div class="restaurant-grid" id="homeRestaurantGrid"></div>
+        </section>
+
+        <!-- VIEW 2: 50 QUÁN CHIA THEO 6 QUẬN -->
+        <section id="view-all" class="view-section">
+          <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:0.75rem; background:#fff; padding:1.2rem 1.4rem; border-radius:18px; border:1px solid var(--border-light);">
+            <div>
+              <h2 style="font-size:1.3rem; font-weight:800;">50 Quán Ngon, Ăn Vặt & Đồ Uống Đà Nẵng (Chuẩn Ảnh 100%)</h2>
+              <p style="font-size:0.82rem; color:var(--text-muted); margin-top:0.2rem;">Mỗi món có hình ảnh thực tế riêng biệt và địa chỉ chính xác tại 6 quận Đà Nẵng.</p>
+            </div>
+            <div style="display:flex; gap:0.6rem; flex-wrap:wrap;">
+              <select id="catalogDistrict" class="filter-select" onchange="syncDistrict('catalog')">
+                <option value="all">📍 Tất cả 6 Quận (50 quán)</option>
+                <option value="Hải Châu">📍 Q. Hải Châu (10 quán)</option>
+                <option value="Sơn Trà">📍 Q. Sơn Trà (9 quán)</option>
+                <option value="Ngũ Hành Sơn">📍 Q. Ngũ Hành Sơn (9 quán)</option>
+                <option value="Thanh Khê">📍 Q. Thanh Khê (8 quán)</option>
+                <option value="Liên Chiểu">📍 Q. Liên Chiểu (8 quán)</option>
+                <option value="Cẩm Lệ">📍 Q. Cẩm Lệ (6 quán)</option>
+              </select>
+              <select id="catalogType" class="filter-select" onchange="renderAllDistricts()">
+                <option value="all">🍽️ Mọi phân loại</option>
+                <option value="snack">🍡 Ăn vặt</option>
+                <option value="drink">🧋 Đồ uống</option>
+                <option value="main">🍜 Món chính</option>
+                <option value="veg">🌱 Món chay</option>
+              </select>
+            </div>
+          </div>
+
+          <div id="allDistrictsContainer"></div>
+        </section>
+
+        <!-- VIEW 3: 6 NỀN ẨM THỰC -->
+        <section id="view-cuisines" class="view-section">
+          <div class="section-head" style="margin-top:0;">
+            <h2>Khám phá theo 6 Nền Ẩm Thực</h2>
+            <button class="btn-primary-pill" onclick="openRandomStudio('roulette')">🎰 Quay Ngẫu Nhiên</button>
+          </div>
+          <div class="categories-grid" id="cuisineCardsGrid" style="margin-bottom:1.8rem;"></div>
+          <div class="restaurant-grid" id="cuisineDishesGrid"></div>
+        </section>
+
+        <!-- VIEW 4: KANBAN DỰ ÁN -->
+        <section id="view-kanban" class="view-section">
+          <h2 style="font-size:1.35rem; font-weight:800;">Bảng Quản Lý Tiến Độ Dự Án (Kanban)</h2>
+          <p style="font-size:0.85rem; color:var(--text-muted); margin-top:0.2rem;">Bấm "Xong ✓" để chuyển hạng mục sang cột Đã hoàn thành.</p>
+          <div class="kanban-board" id="kanbanBoard"></div>
+        </section>
+
+      </main>
+    </div>
+  </div>
+
+  <!-- ==============================================================
+       MODAL SIÊU VÒNG QUAY GACHA STUDIO (3 CHẾ ĐỘ XỊN XÒ)
+       ============================================================== -->
+  <div class="studio-backdrop" id="studioModal" onclick="if(event.target===this) closeRandomStudio()">
+    <div class="studio-modal">
+      <div class="studio-header">
+        <div class="studio-tabs">
+          <button class="studio-tab active" data-st="roulette" onclick="switchStudioTab('roulette')">
+            🎰 Băng Chuyền Vô Cực
+          </button>
+          <button class="studio-tab" data-st="blindbox" onclick="switchStudioTab('blindbox')">
+            🐾 Đập Hộp Mù Hội Mèo
+          </button>
+          <button class="studio-tab" data-st="combo" onclick="switchStudioTab('combo')">
+            ⚡ Combo 3 Tăng Cùng Quận
+          </button>
+        </div>
+
+        <div style="display:flex; align-items:center; gap:0.5rem;">
+          <button id="soundToggleBtn" class="filter-select" onclick="toggleSound()" title="Bật/Tắt hiệu ứng âm thanh">
+            🔊 Âm thanh: Bật
+          </button>
+          <button class="filter-select" onclick="closeRandomStudio()" style="font-weight:800;">✕ Đóng</button>
+        </div>
+      </div>
+
+      <div class="studio-body">
+
+        <!-- TAB 1: BĂNG CHUYỀN VÔ CỰC (CARD ROULETTE) -->
+        <div id="st-panel-roulette" class="st-panel">
+          <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:0.5rem; margin-bottom:0.9rem;">
+            <div>
+              <h3 style="font-size:1.15rem; font-weight:800;">🎰 Băng Chuyền Khai Mở Món Ngon Đà Nẵng</h3>
+              <p style="font-size:0.8rem; color:var(--text-muted);">Các thẻ quán ăn thực tế sẽ trượt tốc độ cao qua tia laser trung tâm.</p>
+            </div>
+            <button id="btnStartRoulette" class="btn-primary-pill" onclick="startCardRoulette()">
+              ⚡ BẤM QUAY NGAY
+            </button>
+          </div>
+
+          <!-- Sân khấu băng chuyền -->
+          <div class="roulette-stage">
+            <div class="roulette-pointer-top">▼ CHỐT ĐƠN ▼</div>
+            <div class="roulette-pointer-line"></div>
+            <div class="roulette-track" id="rouletteTrack"></div>
+          </div>
+
+          <!-- Khung hiển thị chi tiết món vừa trúng -->
+          <div class="winner-reveal-box" id="rouletteWinnerBox">
+            <div class="winner-left">
+              <img id="rwImg" class="winner-thumb" src="https://images.unsplash.com/photo-1555126634-323283e090fa?auto=format&fit=crop&w=300&q=80" alt="Winner" />
+              <div>
+                <span id="rwBadge" style="font-size:0.72rem; font-weight:800; color:var(--primary); text-transform:uppercase;">📍 QUẬN HẢI CHÂU • ★ 4.9</span>
+                <h4 id="rwName" style="font-size:1.18rem; font-weight:800; margin:2px 0;">Mì Quảng Tôm Thịt 1A</h4>
+                <p id="rwSpot" style="font-size:0.8rem; color:var(--text-muted);">🏠 Địa chỉ: Số 1A Hải Phòng, Q. Hải Châu • 💰 40.000đ</p>
+                <p id="rwQuote" style="font-size:0.77rem; font-weight:700; color:var(--primary); margin-top:4px;">🐾 Bấm "BẤM QUAY NGAY" để vũ trụ chọn quán cho bạn!</p>
+              </div>
+            </div>
+            <div>
+              <a id="rwMapBtn" href="https://www.google.com/maps/search/?api=1&query=Mi+Quang+1A+Hai+Phong+Da+Nang" target="_blank" rel="noopener noreferrer" class="btn-primary-pill" style="text-decoration:none;">
+                📍 Chỉ đường Google Maps &rarr;
+              </a>
+            </div>
+          </div>
+        </div>
+
+        <!-- TAB 2: ĐẬP HỘP MÙ HỘI MÈO & THỎ LÙN (BLINDBOX GACHA) -->
+        <div id="st-panel-blindbox" class="st-panel" style="display:none;">
+          <div style="text-align:center; margin-bottom:1rem;">
+            <h3 style="font-size:1.2rem; font-weight:800;">🐾 Khui Túi Mù Hội Mèo & Thỏ Lùn Đà Nẵng</h3>
+            <p style="font-size:0.82rem; color:var(--text-muted);">Bấm chọn 1 trong 4 chiếc hộp dưới đây để đập hộp nhận quẻ món ăn và lời phán của Boss Mèo!</p>
+          </div>
+
+          <div class="blindbox-grid">
+            <div class="bbox-card" id="bbox-main" onclick="openBlindBox('main', 'bbox-main')">
+              <span class="bbox-emoji">🐱</span>
+              <div class="bbox-title">Hộp Mèo Cam</div>
+              <div class="bbox-sub">Chuyên Món Chính Ăn No</div>
+            </div>
+            <div class="bbox-card" id="bbox-snack" onclick="openBlindBox('snack', 'bbox-snack')">
+              <span class="bbox-emoji">😼</span>
+              <div class="bbox-title">Hộp Mèo Mướp</div>
+              <div class="bbox-sub">Chuyên Hệ Ăn Vặt</div>
+            </div>
+            <div class="bbox-card" id="bbox-drink" onclick="openBlindBox('drink', 'bbox-drink')">
+              <span class="bbox-emoji">🧋</span>
+              <div class="bbox-title">Hộp Mèo Trắng</div>
+              <div class="bbox-sub">Chuyên Trà Sữa & Cafe</div>
+            </div>
+            <div class="bbox-card" id="bbox-all" onclick="openBlindBox('all', 'bbox-all')">
+              <span class="bbox-emoji">🐰</span>
+              <div class="bbox-title">Túi Mù Thỏ Lùn</div>
+              <div class="bbox-sub">Random Bất Ngờ 50 Quán</div>
+            </div>
+          </div>
+
+          <div class="winner-reveal-box" id="bboxWinnerBox" style="display:none;">
+            <div class="winner-left">
+              <img id="bbImg" class="winner-thumb" src="" alt="Blindbox Winner" />
+              <div>
+                <span id="bbBadge" style="font-size:0.72rem; font-weight:800; color:var(--primary);"></span>
+                <h4 id="bbName" style="font-size:1.18rem; font-weight:800; margin:2px 0;"></h4>
+                <p id="bbSpot" style="font-size:0.8rem; color:var(--text-muted);"></p>
+                <p id="bbQuote" style="font-size:0.78rem; font-weight:700; color:var(--primary); margin-top:4px;"></p>
+              </div>
+            </div>
+            <a id="bbMapBtn" href="#" target="_blank" rel="noopener noreferrer" class="btn-primary-pill" style="text-decoration:none;">
+              📍 Mở Google Maps &rarr;
+            </a>
+          </div>
+        </div>
+
+        <!-- TAB 3: QUAY COMBO 3 TĂNG CÙNG QUẬN -->
+        <div id="st-panel-combo" class="st-panel" style="display:none;">
+          <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:0.6rem;">
+            <div>
+              <h3 style="font-size:1.15rem; font-weight:800;">⚡ Máy Ghép Lịch Trình 3 Tăng (Cùng 1 Quận Đà Nẵng)</h3>
+              <p style="font-size:0.8rem; color:var(--text-muted);" id="comboSummaryText">Tự động chọn 1 Món Chính + 1 Ăn Vặt + 1 Đồ Uống gần nhau để đi ăn liền mạch!</p>
+            </div>
+            <button class="btn-primary-pill" onclick="spinCombo3Tang()">🎲 Quay Lịch Trình 3 Tăng</button>
+          </div>
+
+          <div class="combo-3-grid" id="combo3Grid"></div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <!-- BOTTOM NAV CHO ĐIỆN THOẠI -->
+  <nav class="mobile-bottom-nav">
+    <button class="mob-tab active" data-view="home" onclick="switchView('home')">
+      <span>🏠</span><span>Home</span>
+    </button>
+    <button class="mob-tab" onclick="openRandomStudio('roulette')">
+      <span>🎰</span><span>Quay Món</span>
+    </button>
+    <button class="mob-tab" data-view="all" onclick="switchView('all')">
+      <span>🏪</span><span>50 Quán</span>
+    </button>
+    <button class="mob-tab" data-view="cuisines" onclick="switchView('cuisines')">
+      <span>🌍</span><span>Ẩm thực</span>
+    </button>
+  </nav>
+
+  <script src="assets/js/app.js" defer></script>
+</body>
+</html>
