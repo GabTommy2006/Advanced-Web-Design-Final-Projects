@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Ăn gì đây? — Chọn món khi bạn không biết ăn gì</title>
+  <meta name="description" content="Không biết ăn gì? Chọn ngẫu nhiên một món hợp với giờ hiện tại hoặc chọn theo nền ẩm thực bạn đang thèm.">
+  <link rel="icon" href="images/logo.svg" type="image/svg+xml">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;600;700&family=Fraunces:opsz,wght@9..144,600;9..144,700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/themes.css">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body data-page="home">
+  <a class="skip-link" href="#main">Bỏ qua đến nội dung chính</a>
+
+  <!-- Header dùng chung (được vẽ bởi js/main.js) -->
+  <header class="site-header" data-site-header></header>
+
+  <main id="main">
+    <!-- ===== HERO THEO WIREFRAME: Trái (lời chào + 2 nút), Phải (ảnh món ăn lớn) ===== -->
+    <section class="home-hero">
+      <div class="container">
+        <div class="home-hero__grid">
+          <div class="home-hero__content" id="greeting">
+            <div class="home-greeting">
+              <span data-greet-icon aria-hidden="true">☀️</span>
+              <span>Hôm nay ăn gì?</span>
+            </div>
+            <h1 data-greet>Chào buổi trưa!</h1>
+            <p class="home-hero__sub" data-greet-sub>Đến giờ ăn trưa rồi. Để tụi mình chọn giúp bạn một món ngon nhé!</p>
+
+            <div class="home-actions">
+              <a class="home-cta home-cta--primary" href="result.html?mode=any">
+                <span class="home-cta__left">
+                  <span class="home-cta__icon" aria-hidden="true">🎲</span>
+                  <span>
+                    <span class="home-cta__title">CHỌN BẤT KỲ</span>
+                    <span class="home-cta__desc">Một món ngẫu nhiên hợp với giờ hiện tại</span>
+                  </span>
+                </span>
+                <span aria-hidden="true">→</span>
+              </a>
+
+              <a class="home-cta" href="cuisines.html">
+                <span class="home-cta__left">
+                  <span class="home-cta__icon" aria-hidden="true">🌏</span>
+                  <span>
+                    <span class="home-cta__title">THEO ẨM THỰC</span>
+                    <span class="home-cta__desc">Việt, Nhật, Hàn, Trung, Thái, Ý hoặc Bất ngờ đi!</span>
+                  </span>
+                </span>
+                <span aria-hidden="true">→</span>
+              </a>
+            </div>
+          </div>
+
+          <!-- Ảnh món ăn lớn -->
+          <div class="hero-showcase">
+            <div class="media hero-showcase__media">
+              <span class="media__emoji" aria-hidden="true">🍜</span>
+              <img src="images/hero-dish.jpg" alt="Tô phở bò nóng hổi với rau thơm">
+            </div>
+            <div class="hero-showcase__caption">
+              <span><strong>36 món ngon</strong> · 6 nền ẩm thực</span>
+              <span>Tối đa 2 lần bấm</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== KHUNG GIỜ BỮA ĂN ===== -->
+    <section class="section">
+      <div class="container">
+        <h2>Chọn món tự động theo khung giờ</h2>
+        <div class="meal-strip">
+          <div class="meal" data-meal="sang">
+            <div class="meal__icon" aria-hidden="true">🌅</div>
+            <span class="meal__name">Bữa sáng</span>
+            <span class="meal__time">05:00 – 10:00</span>
+          </div>
+          <div class="meal" data-meal="trua">
+            <div class="meal__icon" aria-hidden="true">☀️</div>
+            <span class="meal__name">Bữa trưa</span>
+            <span class="meal__time">10:00 – 14:00</span>
+          </div>
+          <div class="meal" data-meal="toi">
+            <div class="meal__icon" aria-hidden="true">🌆</div>
+            <span class="meal__name">Bữa tối</span>
+            <span class="meal__time">14:00 – 21:00</span>
+          </div>
+          <div class="meal" data-meal="khuya">
+            <div class="meal__icon" aria-hidden="true">🌙</div>
+            <span class="meal__name">Ăn khuya</span>
+            <span class="meal__time">21:00 – 05:00</span>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- Footer dùng chung (được vẽ bởi js/main.js) -->
+  <footer class="site-footer" data-site-footer></footer>
+
+  <script src="js/data.js"></script>
+  <script src="js/main.js"></script>
+</body>
+</html>

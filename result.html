@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Kết quả — Ăn gì đây?</title>
+  <meta name="description" content="Món ăn đã được chọn cho bạn. Tìm quán gần đây trên Google Maps hoặc quay lần nữa.">
+  <link rel="icon" href="images/logo.svg" type="image/svg+xml">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;600;700&family=Fraunces:opsz,wght@9..144,600;9..144,700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/themes.css">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body data-page="result">
+  <a class="skip-link" href="#main">Bỏ qua đến nội dung chính</a>
+
+  <!-- Header dùng chung -->
+  <header class="site-header" data-site-header></header>
+
+  <main id="main" class="result-page">
+    <div class="container">
+      <div class="mode-indicator" id="mode-indicator"></div>
+      <div class="visually-hidden" id="result-live" aria-live="polite"></div>
+
+      <!-- ===== THẺ KẾT QUẢ (Wireframe: Trái ảnh món ăn, Phải thông tin + 2 nút) ===== -->
+      <article class="result-card card" id="result-card">
+        <div class="media result-card__media is-fallback" id="dish-media">
+          <span class="media__emoji" aria-hidden="true">🍜</span>
+          <img alt="">
+        </div>
+
+        <div class="result-card__body">
+          <div class="result-card__meta" id="dish-meta">VIỆT NAM · TRƯA</div>
+          <h1 class="result-card__name" id="dish-name">Phở bò</h1>
+          <p class="result-card__desc" id="dish-desc">
+            Nước dùng ninh xương bò nhiều giờ cùng quế, hồi, gừng nướng; bánh phở mềm, thịt bò tái và rau thơm.
+          </p>
+
+          <ul class="dish-facts" id="dish-facts"></ul>
+
+          <div class="dish-actions">
+            <a class="btn btn--primary" id="btn-maps"
+               href="https://www.google.com/maps/search/?api=1&amp;query=ph%E1%BB%9F%20b%C3%B2%20g%E1%BA%A7n%20%C4%91%C3%A2y"
+               target="_blank" rel="noopener noreferrer">
+              📍 TÌM QUÁN GẦN ĐÂY
+              <span class="visually-hidden">(mở Google Maps trong tab mới)</span>
+            </a>
+            <button type="button" class="btn btn--outline" id="btn-again">
+              🔄 QUAY LẦN NỮA
+            </button>
+          </div>
+        </div>
+      </article>
+
+      <!-- ===== THÔNG BÁO KHI KHÔNG CÓ MÓN PHÙ HỢP ===== -->
+      <section class="empty-state card" id="empty-state" hidden>
+        <div class="empty-state__icon" aria-hidden="true">🍽️</div>
+        <h2 id="empty-title">Chưa có món phù hợp</h2>
+        <p id="empty-text">Hãy thử chọn bất kỳ món nào trong thực đơn nhé!</p>
+        <a class="btn btn--primary" href="result.html?mode=any">Chọn bất kỳ món nào</a>
+      </section>
+
+      <!-- ===== MÓN CÙNG NỀN ẨM THỰC ===== -->
+      <section class="related" id="related" aria-labelledby="related-title" hidden>
+        <h2 id="related-title">Món khác cùng ẩm thực</h2>
+        <ul class="related__list" id="related-list"></ul>
+      </section>
+    </div>
+  </main>
+
+  <!-- Footer dùng chung -->
+  <footer class="site-footer" data-site-footer></footer>
+
+  <script src="js/data.js"></script>
+  <script src="js/main.js"></script>
+  <script src="js/result.js"></script>
+</body>
+</html>
