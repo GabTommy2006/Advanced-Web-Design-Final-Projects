@@ -1,0 +1,42 @@
+/* =========================================================
+   THEMES.CSS — Biến màu & chủ đề theo nền ẩm thực (Thẻ 2)
+   Quy tắc: 60% nền kem · 30% thẻ trắng · 10% màu nhấn
+   Mỗi trang chỉ dùng 1 màu nhấn duy nhất (--accent).
+   ========================================================= */
+
+:root {
+  --bg: #FFF8EE;        /* Nền kem ấm */
+  --surface: #FFFFFF;   /* Nền thẻ */
+  --ink: #2B1D14;       /* Chữ chính, nâu đậm */
+  --muted: #6B5A4E;     /* Chữ phụ */
+  --line: #EADFD2;      /* Viền */
+  --brand: #C2410C;     /* Cam: logo, nút chính ở Trang chủ */
+  --accent: var(--brand);
+  --accent-soft: color-mix(in srgb, var(--accent) 10%, var(--bg));
+  --accent-strong: color-mix(in srgb, var(--accent) 82%, #000);
+
+  /* Font chữ (Fraunces + Be Vietnam Pro) */
+  --font-body: "Be Vietnam Pro", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --font-display: "Fraunces", "Lora", Georgia, "Times New Roman", serif;
+
+  /* Kích thước & bo góc */
+  --radius-sm: 10px;
+  --radius: 16px;
+  --radius-lg: 24px;
+  --shadow: 0 1px 2px rgb(43 29 20 / 6%), 0 8px 24px rgb(43 29 20 / 8%);
+  --shadow-lg: 0 4px 10px rgb(43 29 20 / 10%), 0 20px 44px rgb(43 29 20 / 14%);
+  --container: 1120px;
+}
+
+/* Chủ đề theo nền ẩm thực */
+[data-cuisine="viet"]  { --accent: #B02A5B; } /* Hồng sen */
+[data-cuisine="nhat"]  { --accent: #2C4A7C; } /* Xanh chàm */
+[data-cuisine="han"]   { --accent: #B3261E; } /* Đỏ tương ớt gochujang */
+[data-cuisine="trung"] { --accent: #9A5B00; } /* Vàng hổ phách */
+[data-cuisine="thai"]  { --accent: #6A3D9A; } /* Tím hoa đậu biếc */
+[data-cuisine="y"]     { --accent: #2E7D4F; } /* Xanh húng quế */
+
+[data-cuisine] {
+  --accent-soft: color-mix(in srgb, var(--accent) 10%, var(--bg));
+  --accent-strong: color-mix(in srgb, var(--accent) 82%, #000);
+}

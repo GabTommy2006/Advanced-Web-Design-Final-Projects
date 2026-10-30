@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Giới thiệu — Ăn gì đây?</title>
+  <meta name="description" content="Về dự án Ăn gì đây?: ý tưởng, nhóm thực hiện, mood board, wireframe, bảng màu, font chữ và nguồn ảnh.">
+  <link rel="icon" href="images/logo.svg" type="image/svg+xml">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;600;700&family=Fraunces:opsz,wght@9..144,600;9..144,700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/themes.css">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body data-page="about">
+  <a class="skip-link" href="#main">Bỏ qua đến nội dung chính</a>
+
+  <!-- Header dùng chung -->
+  <header class="site-header" data-site-header></header>
+
+  <main id="main">
+    <div class="container">
+      <header class="page-head">
+        <h1>Về dự án</h1>
+        <p>Quy trình thiết kế trang web chọn món ăn giúp bạn khi không biết ăn gì.</p>
+      </header>
+
+      <!-- ===== Ý TƯỞNG · NHÓM ===== -->
+      <section class="about-lead card" id="nhom">
+        <h2>Ý tưởng · Nhóm thực hiện</h2>
+        <p>
+          <strong>Ý tưởng:</strong> Mỗi bữa ăn, câu hỏi “Hôm nay ăn gì?” luôn tốn nhiều thời gian.
+          <em>Ăn gì đây?</em> giải quyết bằng 2 chế độ: <strong>Chọn bất kỳ</strong> (món hợp với giờ hiện tại)
+          và <strong>Chọn theo ẩm thực</strong> (Việt, Nhật, Hàn, Trung, Thái, Ý hoặc máy quay xèng “Bất ngờ đi!”),
+          tối đa 2 lần bấm từ Trang chủ để có kết quả.
+        </p>
+        <p>
+          <strong>Nhóm thực hiện:</strong> Đồ án môn Thiết kế Web Nâng cao · Năm 2026 (6 nền ẩm thực × 6 món = 36 món).
+        </p>
+      </section>
+
+      <!-- ===== LƯỚI 2×2 TRÊN MÁY TÍNH / 1 CỘT TRÊN ĐIỆN THOẠI ===== -->
+      <div class="about-grid">
+        <!-- 1. Mood board -->
+        <section class="about-box card" id="mood-board">
+          <h2>Mood board</h2>
+          <p>Cảm hứng từ quán ăn đường phố ấm cúng, sắc màu gia vị và máy quay xèng vui nhộn.</p>
+          <div class="mood-thumbs">
+            <div class="mood-thumb">
+              <span aria-hidden="true">🍜</span>
+              Ấm áp
+            </div>
+            <div class="mood-thumb">
+              <span aria-hidden="true">🎰</span>
+              Vui tươi
+            </div>
+            <div class="mood-thumb">
+              <span aria-hidden="true">🥢</span>
+              Nhanh gọn
+            </div>
+          </div>
+        </section>
+
+        <!-- 2. Wireframe -->
+        <section class="about-box card" id="wireframe">
+          <h2>Wireframe</h2>
+          <p>Thiết kế đáp ứng: &lt; 640px (1 cột) · 640–1023px (2 cột) · ≥ 1024px (3–4 cột, tối đa 1120px).</p>
+          <div class="wf-mini-grid" aria-label="Sơ đồ wireframe thu nhỏ">
+            <div class="wf-mini">
+              <div class="wf-mini__bar"></div>
+              <div class="wf-mini__block">2 nút + Ảnh</div>
+              <div class="wf-mini__bar"></div>
+              <strong>Trang chủ</strong>
+            </div>
+            <div class="wf-mini">
+              <div class="wf-mini__bar"></div>
+              <div class="wf-mini__block">Lưới 6 + 🎲</div>
+              <div class="wf-mini__bar"></div>
+              <strong>Ẩm thực</strong>
+            </div>
+            <div class="wf-mini">
+              <div class="wf-mini__bar"></div>
+              <div class="wf-mini__block">Ảnh + Món</div>
+              <div class="wf-mini__bar"></div>
+              <strong>Kết quả</strong>
+            </div>
+          </div>
+        </section>
+
+        <!-- 3. Màu sắc -->
+        <section class="about-box card" id="mau-sac">
+          <h2>Màu sắc</h2>
+          <p>Tỷ lệ 60% nền kem · 30% thẻ trắng · 10% màu nhấn. Đạt chuẩn tương phản WCAG AA (≥ 4.5).</p>
+          <ul class="color-dots" aria-label="Bảng màu chủ đề">
+            <li class="color-dot"><span class="color-dot__circle" style="--c:#C2410C"></span>Cam #C2410C</li>
+            <li class="color-dot"><span class="color-dot__circle" style="--c:#B02A5B"></span>Việt #B02A5B</li>
+            <li class="color-dot"><span class="color-dot__circle" style="--c:#2C4A7C"></span>Nhật #2C4A7C</li>
+            <li class="color-dot"><span class="color-dot__circle" style="--c:#B3261E"></span>Hàn #B3261E</li>
+            <li class="color-dot"><span class="color-dot__circle" style="--c:#9A5B00"></span>Trung #9A5B00</li>
+            <li class="color-dot"><span class="color-dot__circle" style="--c:#6A3D9A"></span>Thái #6A3D9A</li>
+            <li class="color-dot"><span class="color-dot__circle" style="--c:#2E7D4F"></span>Ý #2E7D4F</li>
+          </ul>
+          <div class="ratio-bar" aria-label="60% nền kem, 30% thẻ trắng, 10% màu nhấn">
+            <span>60% kem #FFF8EE</span><span>30% trắng</span><span>10%</span>
+          </div>
+        </section>
+
+        <!-- 4. Font chữ -->
+        <section class="about-box card" id="font-chu">
+          <h2>Font chữ</h2>
+          <p>Kết hợp serif ấm áp cho tiêu đề và sans-serif rõ ràng cho nội dung tiếng Việt.</p>
+          <div class="font-pair">
+            <div class="font-card">
+              <span class="font-card__label">Tiêu đề · Fraunces (600 / 700)</span>
+              <p class="font-card__sample--display">Hôm nay ăn Phở bò hay Bún chả?</p>
+            </div>
+            <div class="font-card">
+              <span class="font-card__label">Nội dung · Be Vietnam Pro (400 – 700)</span>
+              <p class="font-card__sample--body">Nước dùng ninh xương thơm quế hồi, bánh phở mềm, rau thơm tươi.</p>
+            </div>
+          </div>
+        </section>
+      </div>
+
+      <!-- ===== NGUỒN ẢNH ===== -->
+      <section class="credits-box card" id="nguon-anh">
+        <h2>Nguồn ảnh</h2>
+        <p>
+          Nguồn ảnh: <strong>Unsplash</strong> (ghi tên tác giả trong trường <code>credit</code> tại <code>js/data.js</code> khi chèn ảnh món ăn vào thư mục <code>images/dishes/</code> và <code>images/cuisines/</code>) · Biểu tượng minh hoạ: Unicode Emoji &amp; SVG tự thiết kế.
+        </p>
+      </section>
+    </div>
+  </main>
+
+  <!-- Footer dùng chung -->
+  <footer class="site-footer" data-site-footer></footer>
+
+  <script src="js/data.js"></script>
+  <script src="js/main.js"></script>
+</body>
+</html>

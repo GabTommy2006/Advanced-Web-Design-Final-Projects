@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Ẩm thực — Ăn gì đây?</title>
+  <meta name="description" content="Chọn nền ẩm thực bạn đang thèm: Việt Nam, Nhật Bản, Hàn Quốc, Trung Hoa, Thái Lan, Ý hoặc mở máy quay xèng Bất ngờ đi!">
+  <link rel="icon" href="images/logo.svg" type="image/svg+xml">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;600;700&family=Fraunces:opsz,wght@9..144,600;9..144,700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/themes.css">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body data-page="cuisines">
+  <a class="skip-link" href="#main">Bỏ qua đến nội dung chính</a>
+
+  <!-- Header dùng chung -->
+  <header class="site-header" data-site-header></header>
+
+  <main id="main">
+    <div class="container">
+      <header class="page-head">
+        <h1>Chọn nền ẩm thực</h1>
+        <p>Mỗi nền ẩm thực có màu nhấn riêng. Bấm vào thẻ để chọn món hoặc mở máy quay xèng “Bất ngờ đi!”.</p>
+      </header>
+
+      <!-- Lưới thẻ ẩm thực + thẻ BẤT NGỜ ĐI! (vẽ bởi js/cuisines.js) -->
+      <div class="cuisine-grid" id="cuisine-grid"></div>
+    </div>
+  </main>
+
+  <!-- ===== HỘP THOẠI MÁY QUAY XÈNG "BẤT NGỜ ĐI!" (Hiệu ứng B) ===== -->
+  <div class="slot-modal" id="slot-modal" role="dialog" aria-modal="true" aria-labelledby="slot-title" hidden>
+    <div class="slot-dialog" id="slot-machine">
+      <button type="button" class="slot-dialog__close" id="btn-slot-close" aria-label="Đóng máy quay">✕</button>
+
+      <h2 class="slot-dialog__title" id="slot-title">BẤT NGỜ ĐI!</h2>
+      <p class="slot-dialog__status" id="slot-status" aria-live="polite">Bấm QUAY để thử vận may!</p>
+
+      <div class="slot-reels">
+        <!-- Cuộn 1: Ẩm thực -->
+        <div class="slot-col">
+          <div class="slot-window">
+            <ul class="slot-strip" id="strip-cuisine"></ul>
+            <div class="slot-window__frame" aria-hidden="true"><span>&gt;</span><span>&lt;</span></div>
+          </div>
+          <span class="slot-col__label">cuộn 1: ẩm thực</span>
+        </div>
+
+        <!-- Cuộn 2: Món ăn -->
+        <div class="slot-col">
+          <div class="slot-window">
+            <ul class="slot-strip" id="strip-dish"></ul>
+            <div class="slot-window__frame" aria-hidden="true"><span>&gt;</span><span>&lt;</span></div>
+          </div>
+          <span class="slot-col__label">cuộn 2: món</span>
+        </div>
+      </div>
+
+      <button type="button" class="btn btn--primary slot-dialog__spin" id="btn-slot-spin">
+        QUAY 🎰
+      </button>
+    </div>
+  </div>
+
+  <!-- Footer dùng chung -->
+  <footer class="site-footer" data-site-footer></footer>
+
+  <script src="js/data.js"></script>
+  <script src="js/main.js"></script>
+  <script src="js/cuisines.js"></script>
+</body>
+</html>

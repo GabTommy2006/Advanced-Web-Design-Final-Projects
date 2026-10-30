@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Tất cả món ăn — Ăn gì đây?</title>
+  <meta name="description" content="Xem toàn bộ 36 món ăn thuộc 6 nền ẩm thực, lọc theo ẩm thực và bữa ăn.">
+  <link rel="icon" href="images/logo.svg" type="image/svg+xml">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;600;700&family=Fraunces:opsz,wght@9..144,600;9..144,700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/themes.css">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body data-page="dishes">
+  <a class="skip-link" href="#main">Bỏ qua đến nội dung chính</a>
+
+  <!-- Header dùng chung -->
+  <header class="site-header" data-site-header></header>
+
+  <main id="main">
+    <div class="container">
+      <header class="page-head">
+        <h1>Tất cả món ăn <span id="dish-count">(36)</span></h1>
+        <p>Lọc theo nền ẩm thực và khung giờ bữa ăn. Bấm vào món để xem chi tiết.</p>
+      </header>
+
+      <!-- ===== BỘ LỌC THEO WIREFRAME ===== -->
+      <section class="filters-bar card" aria-label="Bộ lọc món ăn">
+        <div class="filter-row">
+          <label class="filter-row__label" for="cuisine-select">Ẩm thực:</label>
+          <!-- Trên điện thoại: hiện dropdown [Tất cả v] -->
+          <select class="filter-select" id="cuisine-select" aria-label="Chọn nền ẩm thực"></select>
+          <!-- Trên máy tính: hiện các nút bật/tắt -->
+          <div class="filter-pills filter-pills--cuisine" id="cuisine-pills" role="group" aria-label="Lọc theo ẩm thực"></div>
+        </div>
+
+        <div class="filter-row">
+          <span class="filter-row__label">Bữa:</span>
+          <div class="filter-pills" id="meal-pills" role="group" aria-label="Lọc theo bữa ăn"></div>
+        </div>
+      </section>
+
+      <!-- ===== LƯỚI MÓN ĂN (1 / 2 / 4 cột) ===== -->
+      <ul class="dish-grid" id="dish-grid"></ul>
+
+      <!-- ===== KHI LỌC RA 0 MÓN ===== -->
+      <section class="empty-state card" id="dishes-empty" hidden>
+        <div class="empty-state__icon" aria-hidden="true">🥣</div>
+        <h2>Chưa có món nào như vậy</h2>
+        <p>Thử đổi nền ẩm thực hoặc bữa ăn khác nhé!</p>
+        <button type="button" class="btn btn--primary" id="btn-reset-filter">Bỏ lọc</button>
+      </section>
+    </div>
+  </main>
+
+  <!-- Footer dùng chung -->
+  <footer class="site-footer" data-site-footer></footer>
+
+  <script src="js/data.js"></script>
+  <script src="js/main.js"></script>
+  <script src="js/dishes.js"></script>
+</body>
+</html>
