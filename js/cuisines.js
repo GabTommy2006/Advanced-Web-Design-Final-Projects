@@ -7,9 +7,6 @@
    3. Cuộn 2 nạp các món của ẩm thực đó (ưu tiên hợp bữa hiện tại),
       quay 1,5s rồi dừng.
    4. Khung chọn nháy 2 lần (400ms), rồi chuyển sang result.html?dish=<id>.
-   - Mỗi cuộn lặp danh sách 5 lần, đặt trong overflow: hidden.
-   - Chỉ animate transform: translateY(...) với cubic-bezier(.15,.85,.25,1).
-   - prefers-reduced-motion: reduce → hiện ngay kết quả 2 cuộn.
    ========================================================= */
 (function () {
   'use strict';
@@ -27,8 +24,8 @@
   const slotStatus = document.getElementById('slot-status');
 
   const CUISINE_KEYS = Object.keys(CUISINES);
-  const REPEATS = 5;          // Lặp danh sách 5 lần cho đủ dài
-  const TARGET_ROUND = 3;     // Dừng ở vòng thứ 4 (index 3) để luôn có mục phía trên và dưới
+  const REPEATS = 5;
+  const TARGET_ROUND = 3;
 
   let isSpinning = false;
 
@@ -45,7 +42,7 @@
           <div class="cuisine-card__body">
             <div class="cuisine-card__top">
               <h3>${App.escapeHTML(c.name)}</h3>
-              <span class="cuisine-card__flag" aria-hidden="true">${c.flag}</span>
+              ${App.flagHTML(key, true)}
             </div>
             <p>${App.escapeHTML(c.desc)}</p>
             <div class="cuisine-card__foot">
@@ -79,7 +76,6 @@
     return win ? win.clientHeight / 3 : 52;
   }
 
-  /** Tạo dải mục lặp REPEATS lần; trả về index của target ở vòng TARGET_ROUND */
   function buildStrip(stripEl, items, targetId, renderLabel) {
     const repeated = [];
     for (let r = 0; r < REPEATS; r++) {
@@ -90,14 +86,12 @@
       .join('');
 
     const baseIdx = items.findIndex((x) => x.id === targetId);
-    const targetIdx = TARGET_ROUND * items.length + (baseIdx >= 0 ? baseIdx : 0);
-    return targetIdx;
+    return TARGET_ROUND * items.length + (baseIdx >= 0 ? baseIdx : 0);
   }
 
-  /** Đặt vị trí cuộn sao cho mục ở index `idx` nằm ngay khung chọn giữa (hàng thứ 2 / 3) */
   function setStripIndex(stripEl, idx, animate) {
     const h = getItemHeight();
-    const offset = -(idx - 1) * h; // Trừ 1 để mục idx nằm ở dòng giữa (dòng 0 ở trên, dòng 1 ở giữa, dòng 2 ở dưới)
+    const offset = -(idx - 1) * h;
     stripEl.style.transition = animate
       ? 'transform 1.5s cubic-bezier(.15, .85, .25, 1)'
       : 'none';
@@ -108,17 +102,12 @@
     });
   }
 
-  /** Trạng thái ban đầu khi mới mở máy xèng */
   function resetReels() {
     delete machine.dataset.cuisine;
     machine.classList.remove('is-blinking');
 
-    const cuisineItems = CUISINE_KEYS.map((k) => ({
-      id: k,
-      name: CUISINES[k].name,
-      flag: CUISINES[k].flag,
-    }));
-    buildStrip(stripCuisine, cuisineItems, cuisineItems[1].id, (c) => `${c.flag} ${App.escapeHTML(c.name)}`);
+    const cuisineItems = CUISINE_KEYS.map((k) => ({ id: k, name: CUISINES[k].name }));
+    buildStrip(stripCuisine, cuisineItems, cuisineItems[1].id, (c) => `${App.flagHTML(c.id)} ${App.escapeHTML(c.name)}`);
     setStripIndex(stripCuisine, 1, false);
 
     const sampleDishes = DISHES.slice(0, 6);
@@ -153,7 +142,6 @@
     machine.classList.remove('is-blinking');
     delete machine.dataset.cuisine;
 
-    // Chọn TRƯỚC ẩm thực và món ăn bằng Math.random()
     const meal = App.getMeal();
     const lastId = (() => { try { return sessionStorage.getItem(App.LAST_KEY); } catch { return null; } })();
 
@@ -161,7 +149,6 @@
     const cuisineDishes = DISHES.filter((d) => d.cuisine === chosenCuisine);
     const mealFit = cuisineDishes.filter((d) => d.meals.includes(meal));
 
-    // Ưu tiên món hợp bữa hiện tại và khác món vừa ra
     const pool =
       mealFit.filter((d) => d.id !== lastId).length ? mealFit.filter((d) => d.id !== lastId) :
       mealFit.length ? mealFit :
@@ -169,20 +156,14 @@
       cuisineDishes;
     const chosenDish = App.randomItem(pool);
 
-    // Chuẩn bị cuộn 1 (ẩm thực)
-    const cuisineItems = CUISINE_KEYS.map((k) => ({
-      id: k,
-      name: CUISINES[k].name,
-      flag: CUISINES[k].flag,
-    }));
+    const cuisineItems = CUISINE_KEYS.map((k) => ({ id: k, name: CUISINES[k].name }));
     const targetCuisineIdx = buildStrip(
       stripCuisine,
       cuisineItems,
       chosenCuisine,
-      (c) => `${c.flag} ${App.escapeHTML(c.name)}`
+      (c) => `${App.flagHTML(c.id)} ${App.escapeHTML(c.name)}`
     );
 
-    // Chuẩn bị cuộn 2 (các món của ẩm thực đó, đưa các món hợp bữa lên đầu)
     const orderedDishes = [
       ...mealFit,
       ...cuisineDishes.filter((d) => !d.meals.includes(meal)),
@@ -194,16 +175,14 @@
       (d) => `${d.emoji} ${App.escapeHTML(d.name)}`
     );
 
-    // Đặt cả 2 cuộn về vị trí đầu trước khi quay
     setStripIndex(stripCuisine, 1, false);
     setStripIndex(stripDish, 1, false);
 
-    // Nếu bật prefers-reduced-motion: hiện ngay kết quả của 2 cuộn
     if (App.reduceMotion()) {
       machine.dataset.cuisine = chosenCuisine;
       setStripIndex(stripCuisine, targetCuisineIdx, false);
       setStripIndex(stripDish, targetDishIdx, false);
-      slotStatus.textContent = `${CUISINES[chosenCuisine].name} · ${chosenDish.name}`;
+      slotStatus.innerHTML = `${App.flagHTML(chosenCuisine)} ${App.escapeHTML(CUISINES[chosenCuisine].name)} · ${App.escapeHTML(chosenDish.name)}`;
       await App.wait(400);
       location.href = App.dishUrl(chosenDish);
       return;
@@ -211,20 +190,19 @@
 
     // Bước 2: Cuộn 1 (ẩm thực) quay 1,5s rồi dừng
     slotStatus.textContent = 'Đang quay nền ẩm thực…';
-    void stripCuisine.offsetHeight; // buộc trình duyệt nhận vị trí đầu trước khi animate
+    void stripCuisine.offsetHeight;
     setStripIndex(stripCuisine, targetCuisineIdx, true);
     await App.wait(1500);
 
-    // Khung máy đổi sang màu nhấn của nền ẩm thực đó
     machine.dataset.cuisine = chosenCuisine;
-    slotStatus.textContent = `${CUISINES[chosenCuisine].flag} ${CUISINES[chosenCuisine].name}! Đang chọn món (${MEALS[meal].label.toLowerCase()})…`;
+    slotStatus.innerHTML = `${App.flagHTML(chosenCuisine)} <strong>${App.escapeHTML(CUISINES[chosenCuisine].name)}</strong>! Đang chọn món (${MEALS[meal].label.toLowerCase()})…`;
 
     // Bước 3: Cuộn 2 quay 1,5s rồi dừng
     void stripDish.offsetHeight;
     setStripIndex(stripDish, targetDishIdx, true);
     await App.wait(1500);
 
-    slotStatus.textContent = `🎉 ${chosenDish.name}!`;
+    slotStatus.innerHTML = `🎉 ${App.flagHTML(chosenCuisine)} <strong>${App.escapeHTML(chosenDish.name)}</strong>!`;
 
     // Bước 4: Khung chọn nháy 2 lần (400ms) rồi chuyển sang result.html?dish=<id>
     machine.classList.add('is-blinking');

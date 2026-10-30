@@ -67,18 +67,19 @@
 
   const mealOf = (dish) => (dish.meals.includes(meal) ? meal : dish.meals[0]);
 
-  const metaText = (dish) =>
-    `${CUISINES[dish.cuisine].name} · ${MEALS[mealOf(dish)].label}`;
+  const metaHTML = (dish) =>
+    `${App.flagHTML(dish.cuisine)} <span>${App.escapeHTML(CUISINES[dish.cuisine].name)} · ${App.escapeHTML(MEALS[mealOf(dish)].label)}</span>`;
 
   /* ---------- Hiển thị ---------- */
   function renderIndicator() {
     const m = MEALS[meal];
-    const chips = {
-      any: [`🎰 Chọn bất kỳ`, `${m.icon} ${m.full}`],
-      cuisine: [`🌏 Theo ẩm thực`, `${CUISINES[qCuisine]?.flag || ''} ${CUISINES[qCuisine]?.name || ''}`, `${m.icon} ${m.full}`],
-      dish: [`🍽️ Món đã chọn`],
-    }[mode];
-    els.indicator.innerHTML = chips.map((c) => `<span class="tag">${App.escapeHTML(c)}</span>`).join('');
+    if (mode === 'any') {
+      els.indicator.innerHTML = `<span class="tag">🎰 Chọn bất kỳ</span><span class="tag">${m.icon} ${App.escapeHTML(m.full)}</span>`;
+    } else if (mode === 'cuisine') {
+      els.indicator.innerHTML = `<span class="tag">🌏 Theo ẩm thực</span><span class="tag">${App.flagHTML(qCuisine)} ${App.escapeHTML(CUISINES[qCuisine]?.name || '')}</span><span class="tag">${m.icon} ${App.escapeHTML(m.full)}</span>`;
+    } else {
+      els.indicator.innerHTML = `<span class="tag">🍽️ Món đã chọn</span>`;
+    }
   }
 
   function setImage(dish) {
@@ -94,13 +95,13 @@
 
     els.emoji.textContent = dish.emoji;
     setImage(dish);
-    els.meta.textContent = metaText(dish);
+    els.meta.innerHTML = metaHTML(dish);
     els.name.textContent = dish.name;
     els.desc.textContent = dish.desc;
     els.facts.innerHTML = `
-      <li><strong>${dish.price}</strong>Giá tham khảo</li>
+      <li><strong>${App.escapeHTML(dish.price)}</strong>Giá tham khảo</li>
       <li><strong>${dish.meals.map((k) => MEALS[k].label).join(', ')}</strong>Hợp bữa</li>
-      <li><strong>${CUISINES[dish.cuisine].flag} ${CUISINES[dish.cuisine].name}</strong>Ẩm thực</li>`;
+      <li><strong>${App.flagHTML(dish.cuisine)} ${App.escapeHTML(CUISINES[dish.cuisine].name)}</strong>Ẩm thực</li>`;
     els.maps.href = App.mapsUrl(dish);
     els.live.textContent = `Hôm nay bạn ăn: ${dish.name}`;
 
@@ -109,7 +110,7 @@
 
   function renderRelated(dish) {
     const others = DISHES.filter((d) => d.cuisine === dish.cuisine && d.id !== dish.id);
-    els.relatedTitle.textContent = `Món ${CUISINES[dish.cuisine].name} khác`;
+    els.relatedTitle.innerHTML = `${App.flagHTML(dish.cuisine, true)} Món ${App.escapeHTML(CUISINES[dish.cuisine].name)} khác`;
     els.relatedList.innerHTML = others.map((d) =>
       `<li><a href="${App.dishUrl(d)}"><span aria-hidden="true">${d.emoji}</span> ${App.escapeHTML(d.name)}</a></li>`).join('');
     els.related.hidden = false;
@@ -130,7 +131,6 @@
     const final = pickDish();
     setLast(final.id);
 
-    // Giảm chuyển động: hiện kết quả ngay
     if (App.reduceMotion()) {
       render(final);
       return;
@@ -141,9 +141,9 @@
     card.classList.remove('is-bounce');
     card.classList.add('is-spinning');
     card.setAttribute('aria-busy', 'true');
-    if (mode === 'any') delete document.body.dataset.cuisine;   // chưa biết ẩm thực
+    if (mode === 'any') delete document.body.dataset.cuisine;
 
-    els.media.classList.add('is-fallback');   // chỉ hiện emoji khi đang quay
+    els.media.classList.add('is-fallback');
     els.img.removeAttribute('src');
     els.meta.textContent = 'Đang quay…';
     els.desc.textContent = 'Đang chọn món cho bạn, chờ chút nhé!';
@@ -155,6 +155,7 @@
       shown = dish;
       els.name.textContent = dish.name;
       els.emoji.textContent = dish.emoji;
+      els.meta.innerHTML = `${App.flagHTML(dish.cuisine)} <span>Đang quay…</span>`;
     };
     const randomOther = () => {
       const c = pool.filter((d) => d !== shown && d !== final);
@@ -164,15 +165,15 @@
     tick(randomOther());
     for (let i = 0; i < SCHEDULE.length; i++) {
       await App.wait(SCHEDULE[i]);
-      if (token !== spinToken) return;                 // đã có lượt quay mới
+      if (token !== spinToken) return;
       tick(i === SCHEDULE.length - 1 ? final : randomOther());
     }
 
     card.classList.remove('is-spinning');
     card.removeAttribute('aria-busy');
     render(final);
-    void card.offsetWidth;                // khởi động lại animation
-    card.classList.add('is-bounce');      // nảy nhẹ 0.96 → 1.03 → 1
+    void card.offsetWidth;
+    card.classList.add('is-bounce');
     if (hadFocus) els.again.focus();
   }
 
@@ -204,7 +205,7 @@
     }
 
     els.again.addEventListener('click', () => {
-      if (mode === 'dish') {             // xem món trực tiếp → quay bất kỳ
+      if (mode === 'dish') {
         mode = 'any';
         history.replaceState(null, '', 'result.html?mode=any');
         renderIndicator();

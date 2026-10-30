@@ -2,7 +2,7 @@
    MAIN.JS — Dùng chung cho mọi trang
    - Vẽ header/footer (1 nguồn duy nhất)
    - Menu thu gọn [=] trên điện thoại
-   - Tiện ích: bữa hiện tại, giảm chuyển động, ảnh + emoji thay thế
+   - Tiện ích: bữa hiện tại, giảm chuyển động, cờ quốc gia SVG, ảnh + emoji thay thế
    - Trang chủ: lời chào theo giờ, đánh dấu bữa hiện tại
    ========================================================= */
 (function () {
@@ -34,6 +34,14 @@
 
   const mapsUrl = (dish) =>
     'https://www.google.com/maps/search/?api=1&query=' + encodeURIComponent(`${dish.name} gần đây`);
+
+  /** HTML hình lá cờ SVG của nền ẩm thực */
+  function flagHTML(key, large = false) {
+    const c = CUISINES[key];
+    if (!c) return '';
+    const cls = large ? 'flag-icon flag-icon--lg' : 'flag-icon';
+    return `<img class="${cls}" src="images/flags/${escapeHTML(key)}.svg" alt="Cờ ${escapeHTML(c.name)}">`;
+  }
 
   /** HTML khung ảnh: ảnh thật nếu có, nếu lỗi thì hiện emoji */
   function mediaHTML(src, emoji, alt, extraClass = '') {
@@ -143,7 +151,7 @@
 
   window.App = {
     getMeal, reduceMotion, wait, escapeHTML, randomItem,
-    dishUrl, mapsUrl, mediaHTML, initMedia,
+    dishUrl, mapsUrl, flagHTML, mediaHTML, initMedia,
     LAST_KEY: 'angiday:last-dish',
   };
 })();

@@ -1,6 +1,6 @@
 /* =========================================================
    DISHES.JS — Trang Tất cả món ăn
-   - Bộ lọc ẩm thực: dropdown <select> trên điện thoại + các nút pill trên máy tính
+   - Bộ lọc ẩm thực: dropdown <select> trên điện thoại + các nút pill (có cờ SVG) trên máy tính
    - Bộ lọc bữa ăn: các nút bật/tắt (bấm lần nữa để bỏ chọn)
    - Cập nhật số lượng trên tiêu đề: "Tất cả món ăn (36)"
    - Khi lọc ra 0 món: hiện "Chưa có món nào như vậy" và nút "Bỏ lọc"
@@ -25,10 +25,11 @@
   /* ---------- 1. Tạo nút lọc ---------- */
   function renderFilters() {
     const cuisineOptions = [
-      { key: 'all', label: 'Tất cả' },
+      { key: 'all', text: 'Tất cả', html: 'Tất cả' },
       ...Object.keys(CUISINES).map((k) => ({
         key: k,
-        label: `${CUISINES[k].flag} ${CUISINES[k].name}`,
+        text: CUISINES[k].name,
+        html: `${App.flagHTML(k)} <span>${App.escapeHTML(CUISINES[k].name)}</span>`,
       })),
     ];
 
@@ -36,13 +37,13 @@
       cuisinePills.innerHTML = cuisineOptions.map((c) => `
         <button type="button" class="filter-pill${c.key === activeCuisine ? ' is-active' : ''}"
                 data-cuisine-filter="${c.key}" aria-pressed="${c.key === activeCuisine}">
-          ${App.escapeHTML(c.label)}
+          ${c.html}
         </button>`).join('');
     }
 
     if (cuisineSelect) {
       cuisineSelect.innerHTML = cuisineOptions.map((c) => `
-        <option value="${c.key}">${App.escapeHTML(c.label)}</option>`).join('');
+        <option value="${c.key}">${App.escapeHTML(c.text)}</option>`).join('');
     }
 
     const mealOptions = [
@@ -112,7 +113,7 @@
             ${App.mediaHTML(`images/dishes/${d.id}.jpg`, d.emoji, d.name, 'dish-card__media')}
             <div class="dish-card__body">
               <h3>${App.escapeHTML(d.name)}</h3>
-              <p class="dish-card__meta">${c.flag} ${App.escapeHTML(c.name)} · ${App.escapeHTML(mealLabels)}</p>
+              <p class="dish-card__meta">${App.flagHTML(d.cuisine)} <span>${App.escapeHTML(c.name)} · ${App.escapeHTML(mealLabels)}</span></p>
             </div>
           </a>
         </li>`;
@@ -130,7 +131,6 @@
       const btn = e.target.closest('[data-cuisine-filter]');
       if (!btn) return;
       const val = btn.dataset.cuisineFilter;
-      // Bấm lại nút đang bật thì trả về 'all'
       activeCuisine = (activeCuisine === val && val !== 'all') ? 'all' : val;
       syncFilterUI();
       renderDishes();
